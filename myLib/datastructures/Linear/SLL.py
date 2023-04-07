@@ -1,4 +1,4 @@
-from myLib.datastructures.nodes import DNode
+from myLib.datastructures.nodes import Node
 
 class SLL:
     def __init__(self, head=None):              # Acts as both default and normal constructor from the part: head = None
@@ -38,21 +38,13 @@ class SLL:
             current.next = node
             self.size += 1                                   # Increment Size
 
-    def is_sorted(self):                                    
-        current = self.head
-        while current.next:
-            if current.value > current.next.value:
-                return False
-            current = current.next
-        return True
-
 
     def sorted_insert(self, node):
         current = self.head
         sorted_status = True
 
         while current.next:                             # Checks if the list is sorted
-            if current.value > current.next.value:
+            if current.data > current.next.data:
                 sorted_status = False
                 break
             current = current.next
@@ -61,11 +53,11 @@ class SLL:
             self.sort()
 
         # Insert the node
-        if self.head is None or self.head.value >= node.value:          # If linked list is empty, or if current smallest node bigger than the new node
+        if self.head is None or self.head.data >= node.data:          # If linked list is empty, or if current smallest node bigger than the new node
             self.insert_head(node)
         else:                                                           # Else, iterate through sorted list until value finds proper insertion
             current = self.head
-            while current.next and current.next.value < node.value:     # While there is a next node and and the next node is smaller than the new node
+            while current.next and current.next.data < node.data:     # While there is a next node and and the next node is smaller than the new node
                 current = current.next
             node.next = current.next
             current.next = node
@@ -73,10 +65,10 @@ class SLL:
                 self.tail = node
             self.size += 1                                              # Increment size
 
-    def search(self, value):
+    def search(self, data):
         current = self.head
         while current:                                                  # Iterate until value is found or current.next does not exist (end of linked list)
-            if current.value == value:                                  # Returns the value if it is found            
+            if current.data == data:                                  # Returns the value if it is found            
                 return current
             current = current.next                                      # Used to iterate to next node
         return None                                                     # Return none if it cannot find the value
@@ -104,15 +96,15 @@ class SLL:
             self.tail = current                                         # Set tail to this last node we interated until
         self.size -= 1                                                  # Decrement size
 
-    def delete(self, value):
+    def delete(self, data):
         if self.head is None:                                           # If the linked list is empty, throw an error as we cannot delete
                    raise RuntimeError("Cannot Delete From an Empty List")
 
-        if self.head.value == value:                                    # For the case what we want to delete is the first value
+        if self.head.data == data:                                    # For the case what we want to delete is the first value
             self.delete_head()
         else:                                                           # Else, undergo normal deletion
             current = self.head
-            while current.next and current.next.value != value:         # Iterate until we find the node with the value, or end of SLL
+            while current.next and current.next.data != data:         # Iterate until we find the node with the value, or end of SLL
                 current = current.next
 
             if current.next is None:                                    # If we iterated until end of SLL, we did not find the value so return a ValueError
@@ -137,7 +129,7 @@ class SLL:
             current = next_node
 
         self.head = sorted_list.head                                    # Set head to the head of the sorted list
-        self.tail = sorted_list.tail                                    # Set head to the tail of the sorted list
+        self.tail = sorted_list.tail                                    # Set tail to the tail of the sorted list
 
     def clear(self):                                                    # Empty's the SLL, clears tail and head
         self.head = self.tail = None            
@@ -148,7 +140,7 @@ class SLL:
         current = self.head
         sorted_status = True
         while current and current.next:
-            if current.value > current.next.value:
+            if current.data > current.next.data:
                 sorted_status = False
                 break
             current = current.next
@@ -159,7 +151,7 @@ class SLL:
         print("List content:")
         current = self.head
         while current:
-            print(current.value, end=" -> ")
+            print(current.data, end=" -> ")
             current = current.next
         print("None")
 
