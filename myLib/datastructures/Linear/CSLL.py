@@ -19,6 +19,42 @@ class CircularSLL(SLL):
         super().insert(node, index)
         if index == 0:
             self.tail.next = self.head      # If its inserted into first value, we must change tail node to point to the head node now
+    
+    def sorted_insert(self, node):
+        current = self.head
+        sorted_status = True
+
+        index = 0
+        while index < self.size:                             # Checks if the list is sorted
+            if current.data > current.next.data:
+                sorted_status = False
+                break
+            current = current.next
+            index += 1
+
+        if not sorted_status:                           # If not list is not sorted, sort the list
+            self.sort()
+        
+        if self.head is None or self.head.data >= node.data:
+            self.insert_head(node)
+        else:
+            current = self.head
+            while current.next != self.head and current.next.data < node.data:      # Iterate until we find where data should be inserted
+                current = current.next
+            node.next = current.next
+            current.next = node
+            if current == self.tail:
+                self.tail = node
+            self.size += 1
+            self.tail.next = self.head                                               # Maintain circularity
+
+    def search(self, data):
+        current = self.head
+        for element in range(self.size):        # Iterate through the size of the linked list
+            if current.data == data:
+                return current                  # Return correct value if it is found
+            current = current.next
+        return None                             # If it is not found, do not return anything
 
     def delete_head(self):
         if self.head == self.tail:          # If only one node is present
@@ -55,6 +91,22 @@ class CircularSLL(SLL):
 
         current.next = current.next.next                              # Set the Node next to the next of the next node            
         self.size -= 1
+    
+    def sort(self):
+        if self.size <= 1:
+            return
+
+        sorted_list = CircularSLL()
+        current = self.head
+        for element in range(self.size):                    # Iterate through size of CSLL
+            next_node = current.next
+            current.next = None
+            sorted_list.sorted_insert(current)              # Use sorted insert to put in correct place each time
+            current = next_node
+
+        self.head = sorted_list.head                        # Set head pointer to sorted_list head
+        self.tail = sorted_list.tail                        # Set tail pointer to sorted_list tail
+        self.tail.next = self.head                          # maintain circularity
     
     def clear(self):
         super().clear()
