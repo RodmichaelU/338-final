@@ -1,7 +1,7 @@
 from myLib.datastructures.nodes import Node
 from SLL import SLL
 
-class CircularSLL(SLL):
+class CSLL(SLL):
     def __init__(self, head=None):
         super().__init__(head)
         if head:                        
@@ -96,7 +96,7 @@ class CircularSLL(SLL):
         if self.size <= 1:
             return
 
-        sorted_list = CircularSLL()
+        sorted_list = CSLL()
         current = self.head
         for element in range(self.size):                    # Iterate through size of CSLL
             next_node = current.next
