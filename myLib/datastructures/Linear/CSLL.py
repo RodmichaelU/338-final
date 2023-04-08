@@ -1,4 +1,4 @@
-from myLib.datastructures.nodes import Node
+from myLib.datastructures.nodes import SNode
 from SLL import SLL
 
 class CSLL(SLL):

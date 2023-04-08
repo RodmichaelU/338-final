@@ -1,4 +1,4 @@
-from myLib.datastructures.nodes import Node
+from myLib.datastructures.nodes import SNode
 
 class SLL:
     def __init__(self, head=None):              # Acts as both default and normal constructor from the part: head = None

@@ -63,14 +63,50 @@ class CDLL(DLL):
         return None             
 
     def delete_head(self):                       
-        if self.size > 1:                       # Update tail next to point to the node next of the head node
-            self.tail.next = self.head.next
-        super().delete_head()                   # Normal head deletion after, as tail next pointer is already updated
+        if self.size == 1:                     # If only one node is present
+            self.head = None
+            self.tail = None
+        else:
+            self.head = self.head.next         # Move head to next node
+            self.head.prev = self.tail         # Set head.prev to tail
+            self.tail.next = self.head         # Set tail.next to new head
+        self.size -= 1                         # Normal head deletion after, as tail next pointer is already updated
 
     def delete_tail(self):                       
-        if self.size > 1:                       # Update head prev to point to the node prev of the tail node
-            self.head.prev = self.tail.prev
-        super().delete_tail()                   # Normal tail deletion after, as head prev pointer is already updated
+        if self.size == 1:                     # If only one node is present
+            self.head = None
+            self.tail = None
+        else:
+            self.tail = self.tail.prev         # Move tail to previous node
+            self.tail.next = self.head         # Set tail.next to head
+            self.head.prev = self.tail         # Set head.prev to new tail
+        self.size -= 1                         # Normal tail deletion after, as head prev pointer is already updated
+
+    def delete(self, data):
+        if self.head is None:                           # Cannot delete from empty list, raise an error
+            raise RuntimeError("Cannot Delete From an Empty List")
+    
+        if self.head and self.head.data == data:        # If data is at head node, undergo normal head deletion
+            self.delete_head()
+            return
+    
+        current = self.head
+        index = 0
+        while current.next.data != data and index < self.size:       # Find Node with data, or until we iterate to end of linked list
+            current = current.next
+            index += 1
+
+        if index == self.size:                                         # Means we iterate through the entire list
+            raise ValueError("Node Not Found")
+
+        if index == self.size - 1:                                     # The case of tail deletion, desired node is tail node
+            self.delete_tail()
+            return
+
+        # Update the next and prev pointers of the adjacent nodes
+        current.next.next.prev = current                               # Set the prev of the node next to the node to be deleted
+        current.next = current.next.next                               # Set the next of the current node to the node next to the node to be deleted
+        self.size -= 1
 
     def sort(self):
         if self.size <= 1:
