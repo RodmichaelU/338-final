@@ -1,5 +1,4 @@
-from myLib.datastructures.nodes import SNode
-from SLL import SLL
+from .SLL import SLL
 
 class CSLL(SLL):
     def __init__(self, head=None):

@@ -1,5 +1,4 @@
-from myLib.datastructures.nodes import DNode
-from DLL import DLL
+from .DLL import DLL
 
 class CDLL(DLL):
     def __init__(self, head=None):

@@ -1,5 +1,3 @@
-from myLib.datastructures.nodes import SNode
-
 class SLL:
     def __init__(self, head=None):              # Acts as both default and normal constructor from the part: head = None
         self.head = head
@@ -43,7 +41,7 @@ class SLL:
         current = self.head
         sorted_status = True
 
-        while current.next:                             # Checks if the list is sorted
+        while current and current.next:                             # Checks if the list is sorted
             if current.data > current.next.data:
                 sorted_status = False
                 break
