@@ -16,15 +16,14 @@ class CSLL(SLL):
 
     def insert(self, node, index):
         super().insert(node, index)
-        if index == 0:
-            self.tail.next = self.head      # If its inserted into first value, we must change tail node to point to the head node now
+        self.tail.next = self.head      # If its inserted into first value, we must change tail node to point to the head node now
     
     def sorted_insert(self, node):
         current = self.head
         sorted_status = True
 
         index = 0
-        while index < self.size:                             # Checks if the list is sorted
+        while index < self.size - 1 and current.next:                             # Checks if the list is sorted
             if current.data > current.next.data:
                 sorted_status = False
                 break
@@ -38,11 +37,13 @@ class CSLL(SLL):
             self.insert_head(node)
         else:
             current = self.head
-            while current.next != self.head and current.next.data < node.data:      # Iterate until we find where data should be inserted
+            index = 0
+            while index < self.size and current.next.data < node.data:      # Iterate until we find where data should be inserted
                 current = current.next
+                index += 1
             node.next = current.next
             current.next = node
-            if current == self.tail:
+            if index == self.size:
                 self.tail = node
             self.size += 1
             self.tail.next = self.head                                               # Maintain circularity
@@ -56,11 +57,15 @@ class CSLL(SLL):
         return None                             # If it is not found, do not return anything
 
     def delete_head(self):
-        if self.head == self.tail:          # If only one node is present
+        if self.head is None:
+            raise RuntimeError("Cannot Delete From an Empty List")
+        if self.head == self.tail:              # Special case when there is only one node
+            self.head = None
             self.tail = None
-        super().delete_head()
-        if self.head:                       # If we don't have an empty CSLL, maintain circularity
-            self.tail.next = self.head
+        else:                                   # Else, set tail next to the head next and self.head to head.next
+            self.tail.next = self.head.next
+            self.head = self.head.next
+        self.size -= 1
 
     def delete_tail(self):
         super().delete_tail()
@@ -111,6 +116,22 @@ class CSLL(SLL):
         super().clear()
     
     def print(self):
-        super().print()
-        if self.head:                                                  # Show the circularity, and next value of the tail node
-            print("Tail next: ", self.tail.next.data)
+        sorted_status = True
+        index = 0
+        current = self.head
+        while index < self.size - 1 and current.next:                             # Checks if the list is sorted
+            if current.data > current.next.data:
+                sorted_status = False
+                break
+            current = current.next
+            index += 1
+        print(f"List length: {self.size}")
+        print(f"Sorted status: {'Yes' if sorted_status else 'No'}")
+        print("List content:")
+        index = 0
+        current = self.head
+        while index < self.size:
+            print(current.data, end=" -> ")
+            current = current.next
+            index += 1
+        print("Tail next:", self.tail.next.data if self.tail else None)
