@@ -16,20 +16,53 @@ class DLL(SLL):
         super().insert_tail(node)       # Same insertion otherwise
 
     def insert(self, node, index):
-        if index == self.size:          # In the case the index is the end of the DLL
-            self.insert_tail(node)
-        else:                               # Else, undergo normal insertion at first
-            super().insert(index, node)
-            if index > 0:                   # If index was not at 0, we set the current prev to the next nodes prev                     
-                node.prev = node.next.prev
-                node.next.prev = node       # Aswell, set the next node prev to our current node
+        if index < 0 or index > self.size:                   # Throw an error if invalid index
+            raise IndexError("Invalid Insertion Position")
+
+        if index == 0:                                       # Is insertion from head
+            self.insert_head(node)
+        elif index == self.size:                             # Is insertion from tail       
+            self.insert_tail(node)              
+        else:
+            current = self.head
+            for element in range(index - 1):                 # Iterate to correct index
+                current = current.next
+            node.next = current.next
+            current.next.prev = node                         # Update the prev pointer of the next node
+            current.next = node
+            node.prev = current                              # Update the prev pointer of the newly inserted node
+            self.size += 1            
 
     def sorted_insert(self, node):
-        super().sorted_insert(node)
-        if node.next:                       # If next node exist, set its prev value to node
-            node.next.prev = node
-        if node.prev:                       # If prev node exist, set its next value to node
-            node.prev.next = node
+        current = self.head
+        sorted_status = True
+
+        while current and current.next:                             # Checks if the list is sorted
+            if current.data > current.next.data:
+                sorted_status = False
+                break
+            current = current.next
+
+        if not sorted_status:                           # If not list is not sorted, sort the list
+            self.sort()
+
+        # Insert the node
+        if self.head is None or self.head.data >= node.data:          # If linked list is empty, or if current smallest node bigger than the new node
+            self.insert_head(node)
+        else:                                                           # Else, iterate through sorted list until value finds proper insertion
+            current = self.head
+            while current.next and current.next.data < node.data:     # While there is a next node and and the next node is smaller than the new node
+                current = current.next
+            node.next = current.next
+            node.prev = current                                         # Update the prev pointer of the newly inserted node
+            current.next = node
+
+            if node.next:  # Update the prev pointer of the next node if it exists
+                node.next.prev = node
+            else:  # If the new insertion is the last in the linked list, set the tail equal to it
+                self.tail = node
+            self.size += 1                                              # Increment size
+
 
     def search(self, data):                 # Not needed, but for readability, search is same as SLL
         return super().search(data)
@@ -72,6 +105,8 @@ class DLL(SLL):
             current.next = None
             current.prev = None
             sorted_list.sorted_insert(current)      # Efficiently uses sorted_insert() to insert into our sorted list
+            if sorted_list.head.prev:               # Update the prev pointer of the head of the sorted_list
+                sorted_list.head.prev = None
             current = next_node
 
         self.head = sorted_list.head                # Set head to the head of the sorted list

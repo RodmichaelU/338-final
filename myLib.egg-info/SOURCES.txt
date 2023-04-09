@@ -19,4 +19,7 @@ myLib/datastructures/nodes/__init__.py
 myLib/datastructures/trees/AVL.py
 myLib/datastructures/trees/BST.py
 myLib/datastructures/trees/__init__.py
+test/test_CDLL.py
+test/test_CSLL.py
+test/test_DLL.py
 test/test_SLL.py
