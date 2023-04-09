@@ -27,7 +27,7 @@ class CDLL(DLL):
         sorted_status = True
 
         index = 0
-        while index < self.size:                             # Checks if the list is sorted
+        while index < self.size - 1 and current.next:                             # Checks if the list is sorted
             if current.data > current.next.data:
                 sorted_status = False
                 break
@@ -61,7 +61,9 @@ class CDLL(DLL):
             current = current.next
         return None             
 
-    def delete_head(self):                       
+    def delete_head(self):
+        if self.head is None:
+            raise RuntimeError("Cannot Delete From an Empty List")                       
         if self.size == 1:                     # If only one node is present
             self.head = None
             self.tail = None
@@ -71,7 +73,9 @@ class CDLL(DLL):
             self.tail.next = self.head         # Set tail.next to new head
         self.size -= 1                         # Normal head deletion after, as tail next pointer is already updated
 
-    def delete_tail(self):                       
+    def delete_tail(self):
+        if self.head is None:
+            raise RuntimeError("Cannot Delete From an Empty List")                        
         if self.size == 1:                     # If only one node is present
             self.head = None
             self.tail = None
@@ -128,7 +132,26 @@ class CDLL(DLL):
         super().clear()
 
     def print(self):
-        super().print()
-        print(f"Head prev: {self.head.prev.data}")       # Conditionally print head prev
-        print(f"Tail next: {self.tail.next.data}")       # Conditionally print head tail
+        sorted_status = True
+        index = 0
+        current = self.head
+        while index < self.size - 1 and current.next:                             # Checks if the list is sorted
+            if current.data > current.next.data:
+                sorted_status = False
+                break
+            current = current.next
+            index += 1
+
+
+        print(f"List length: {self.size}")
+        print(f"Sorted status: {'Yes' if sorted_status else 'No'}")
+        print("List content:")
+        index = 0
+        current = self.head
+        print(f"Head prev:", self.head.prev.data if self.head else None)        # Conditionally print head prev
+        while index < self.size:
+            print(current.data, end=" <-> " if index < self.size - 1 else "\n")   # Condtional placement of <->
+            current = current.next
+            index += 1
+        print("Tail next:", self.tail.next.data if self.tail else None)       # Conditionally print head tail
 
