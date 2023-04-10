@@ -1,14 +1,13 @@
 from myLib.datastructures.nodes import TNode
 
 class BST:
-    def __init__(self):
-        self.root = None            ##initializes root to none
-
-    def __init__(self, val):
-        self.root = TNode(val, 0, None, None, None)     ##takes int value as arg and creates new TNode object and is set as BST root
-
-    def __init__(self, obj):
-        self.root = obj             ##Takes existing TNode object as arg and sets it to root of BST
+    def __init__(self, val=None, obj=None):
+        if obj:
+            self.root = obj            ##Takes existing TNode object as arg and sets it to root of BST
+        elif val is not None:
+            self.root = TNode(val, 0, None, None, None)     ##takes int value as arg and creates new TNode object and is set as BST root
+        else:
+            self.root = None        ##initializes root to none
 
     def set_root(self, node):       ##setter for root
         self.root = node
@@ -120,5 +119,30 @@ class BST:
             print(node)
 
 
-##need printBF()
+    def printBF(root):
+        if root is None:
+            return
+
+        queue = [root]
+        next_level_count = 0
+        current_level_count = 1
+
+        while queue:
+            node = queue.pop(0)
+            current_level_count -= 1
+
+            print(node.data, end=" ")
+
+            if node.left:
+                queue.append(node.left)
+                next_level_count += 1
+
+            if node.right:
+                queue.append(node.right)
+                next_level_count += 1
+
+            if current_level_count == 0:
+                print()
+                current_level_count = next_level_count
+                next_level_count = 0
                
