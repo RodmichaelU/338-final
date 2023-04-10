@@ -9,6 +9,18 @@ def test_insert_head():
     assert sll.tail.data == 1
     assert sll.size == 1
 
+def test_sll_constructor():
+    sll = SLL()
+    assert sll.head is None
+    assert sll.tail is None
+    assert sll.size == 0
+
+    sll = SLL(SNode(1))
+    assert sll.head.data == 1
+    assert sll.tail.data == 1
+    assert sll.size == 1
+    
+
 def test_insert_tail():
     sll = SLL()
     sll.insert_tail(SNode(1))
