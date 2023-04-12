@@ -123,6 +123,35 @@ class AVL(BST):
 
         return right_child
 
+    def rotate_right(self, node):
+        """
+        Rotates the given node and its left child to the right
+        """
+        left_child = node.left
+        node.left = left_child.right
+
+        if left_child.right is not None:
+            left_child.right.parent = node
+
+        left_child.parent = node.parent
+
+        if node.parent is None:
+            self.root = left_child
+        elif node is node.parent.right:
+            node.parent.right = left_child
+        else:
+            node.parent.left = left_child
+
+        left_child.right = node
+        node.parent = left_child
+
+        # Update the heights of the nodes
+        node.height = max(self.get_height(node.left), self.get_height(node.right)) + 1
+        left_child.height = max(self.get_height(left_child.left), self.get_height(left_child.right)) + 1
+
+        return left_child
+
+
     def insert(self, val):
         """
         Inserts a node with the given value into the AVL tree while maintaining

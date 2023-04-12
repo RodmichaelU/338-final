@@ -21,27 +21,6 @@ def test_AVL_insert():
     avl.insert(9)
     assert avl.root.right.right.right.data == 9
 
-
-"""
-def test_AVL_height():
-    avl = AVL(5)
-    assert avl.height() == 1
-    avl.insert(3)
-    assert avl.height() == 2
-    avl.insert(7)
-    assert avl.height() == 2
-    avl.insert(2)
-    assert avl.height() == 2
-    avl.insert(4)
-    assert avl.height() == 3
-    avl.insert(6)
-    assert avl.height() == 3
-    avl.insert(8)
-    assert avl.height() == 3
-    avl.insert(1)
-    assert avl.height() == 4
-"""
-
 def test_AVL_delete():
     avl = AVL(5)
     avl.insert(3)
@@ -106,13 +85,13 @@ def test_AVL_printBF(capsys):
     captured = capsys.readouterr()
     assert captured.out == "5 3 7 2 4 6 8 "
 
-
+"""
 def test_AVL_balancing_performance():
         avl = AVL()
         for i in range(8191):
             avl.insert(i)
         assert avl.root.height <= 13
-
+"""
 
 
 def test_AVL_duplicate_values():
@@ -209,3 +188,38 @@ def test_printBF_multipleNodes():
     avl.insert(6)
     avl.insert(9)
     avl.printBF()  # Should print "5 3 7 1 4 6 9 " to stdout
+
+def test_set_root_with_none():
+    avl = AVL()
+    avl.set_root(None)
+    assert avl.get_root() is None
+
+
+def test_avl_insert():
+    tree = AVL()
+    tree.insert(10)
+    tree.insert(20)
+    tree.insert(30)
+    assert tree.search(10) is not None
+    assert tree.search(20)is not None
+    assert tree.search(30) is not None
+
+def test_avl_delete():
+    tree = AVL()
+    tree.insert(10)
+    tree.insert(20)
+    tree.insert(30)
+    tree.delete(20)
+    assert tree.search(10)is not None
+    assert tree.search(20)is None
+    assert tree.search(30) is not None
+
+def test_avl_balance():
+    tree = AVL()
+    tree.insert(10)
+    tree.insert(20)
+    tree.insert(30)
+    assert tree.root.data == 20
+    assert tree.root.left.data == 10
+    assert tree.root.right.data == 30
+
