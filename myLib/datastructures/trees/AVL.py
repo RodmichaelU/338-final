@@ -91,7 +91,9 @@ class AVL(BST):
         """
         if node is None:
             return 0
-        return node.height
+        else:
+            node.height = max(self.get_height(node.left), self.get_height(node.right)) + 1
+            return node.height
 
     def rotate_left(self, node):
         """
@@ -227,3 +229,4 @@ class AVL(BST):
                 queue.append(node.left)
             if node.right:
                 queue.append(node.right)
+

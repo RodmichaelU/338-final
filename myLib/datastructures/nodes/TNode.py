@@ -68,7 +68,12 @@ class TNode:
         self.left = left
         self.right = right
 
+    def update_balance(self):
+            left_height = self.left.height() if self.left else -1
+            right_height = self.right.height() if self.right else -1
+            self.balance = right_height - left_height
 
-
-
-
+    def height(self):
+        left_height = self.left.height() if self.left else -1
+        right_height = self.right.height() if self.right else -1
+        return max(left_height, right_height) + 1

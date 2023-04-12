@@ -108,9 +108,30 @@ class BST:
             return False
 
     def _find_min(self, node):
-        if node.get_left() is None:
-            return node
-        return self._find_min(node.get_left())
+        while node.get_left() is not None:
+            node = node.get_left()
+        return node
+
+    def _update_balance(self, node):
+        if node is not None:
+            node.update_balance()
+            if node.get_balance() == -2:
+                if node.get_left().get_balance() <= 0:
+                    self._rotate_right(node)
+                else:
+                    self._rotate_left_right(node)
+            elif node.get_balance() == 2:
+                if node.get_right().get_balance() >= 0:
+                    self._rotate_left(node)
+                else:
+                    self._rotate_right_left(node)
+            self._update_balance(node.get_parent())
+        
+    def _rotate_left(self, node):
+        pivot = node.get_right()
+        pivot.set_parent(node.get_parent())
+        if node == self.root:
+            self.root = pivot
 
     def search(self, val):
     # Public method that searches for a node with the given value in the tree
@@ -140,7 +161,7 @@ class BST:
             print(node)
 
 
-    def printBF(root):
+    def printBF(self,root):
         if root is None:
             return
 
