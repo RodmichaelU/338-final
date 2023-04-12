@@ -51,19 +51,3 @@ class TNode:
 
     def to_string(self):
         return str(self.data)
-
-    # Default constructor without arguments
-    def TNode(self):
-        self.data = None
-        self.balance = 0
-        self.parent = None
-        self.left = None
-        self.right = None   
-
-    # Overloaded constructor that takes data, balance, parent, left, and right as arguments
-    def TNode(self, data, balance, parent, left, right):
-        self.data = data
-        self.balance = balance
-        self.parent = parent
-        self.left = left
-        self.right = right
