@@ -1,4 +1,5 @@
-from myLib.datastructures.nodes import TNode
+from myLib.datastructures.nodes.TNode import TNode
+
 
 class BST:
     def __init__(self, val=None, obj=None):
@@ -21,23 +22,39 @@ class BST:
         else:                       ##tree has nodes, calls _insert to to find correct spot
             self._insert(val, self.root)
 
-    def _insert(self, val, node):
-        if val < node.get_data():   ##checks left child 
+    def _insert(self, val, node, depth=0, max_depth=100):
+        if depth >= max_depth:
+            raise RuntimeError("Maximum recursion depth exceeded")
+        if node is None:
+            new_node = TNode(val, 0, None, None, None)
+            return new_node
+        elif val < node.get_data():
             if node.get_left() is None:
-                node.set_left(TNode(val, 0, node, None, None))  ##sets as left child
+                new_node = TNode(val, 0, node, None, None)
+                node.set_left(new_node)
+                return new_node
             else:
-                self._insert(val, node.get_left())  ##recursive call
+                return self._insert(val, node.get_left(), depth+1, max_depth)
         else:
             if node.get_right() is None:
-                node.set_right(TNode(val, 0, node, None, None))
+                new_node = TNode(val, 0, node, None, None)
+                node.set_right(new_node)
+                return new_node
             else:
-                self._insert(val, node.get_right())
+                return self._insert(val, node.get_right(), depth+1, max_depth)
+
+    def insert_node(self, val):
+        """
+        Inserts the given value into the AVL tree while maintaining the balance
+        of the tree
+        """
+        self.insert(val)  # call AVL insert method to insert the value
 
     def delete(self, val):
         if self.root is None:
-            return False    ##nothing to delete
+            return False
         else:
-            return self._delete(val, self.root)     ##calls helper
+            return self._delete(val, self.root)
 
     def _delete(self, val, node):
         # If the current node's value is equal to the value to be deleted, handle the four cases:
@@ -90,6 +107,10 @@ class BST:
         else:
             return False
 
+    def _find_min(self, node):
+        if node.get_left() is None:
+            return node
+        return self._find_min(node.get_left())
 
     def search(self, val):
     # Public method that searches for a node with the given value in the tree
@@ -146,3 +167,4 @@ class BST:
                 current_level_count = next_level_count
                 next_level_count = 0
                
+

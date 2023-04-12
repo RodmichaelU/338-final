@@ -67,8 +67,3 @@ class TNode:
         self.parent = parent
         self.left = left
         self.right = right
-
-
-
-
-

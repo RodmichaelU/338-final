@@ -1,11 +1,12 @@
-from myLib.datastructures.nodes import TNode
-from BST import BST
+from myLib.datastructures.nodes.TNode import TNode
+from myLib.datastructures.trees.BST import BST
+
 
 class AVL(BST):
     def __init__(self, val = None):
         super().__init__()  # call parent constructor
         if val is not None:
-            self.root = self.TNode(val)
+            self.root = TNode(val, 0, None, None, None)
 
     def AVL(self, obj):
         """
@@ -45,7 +46,7 @@ class AVL(BST):
         if node is None:
             return None
         
-        new_node = self.TNode(node.val)
+        new_node = TNode(node.data)
         new_node.left = self.__create_balanced_avl_tree(node.left)
         new_node.right = self.__create_balanced_avl_tree(node.right)
         
@@ -79,7 +80,46 @@ class AVL(BST):
                 node.right = self.rotate_right(node.right)
                 node = self.rotate_left(node)
 
-        return max(left_height, right_height) + 1
+        # Update the height of the node
+        node.height = max(self.get_height(node.left), self.get_height(node.right)) + 1
+
+        return node.height
+
+    def get_height(self, node):
+        """
+        Helper function to get the height of the given node
+        """
+        if node is None:
+            return 0
+        return node.height
+
+    def rotate_left(self, node):
+        """
+        Rotates the given node and its right child to the left
+        """
+        right_child = node.right
+        node.right = right_child.left
+
+        if right_child.left is not None:
+            right_child.left.parent = node
+
+        right_child.parent = node.parent
+
+        if node.parent is None:
+            self.root = right_child
+        elif node is node.parent.left:
+            node.parent.left = right_child
+        else:
+            node.parent.right = right_child
+
+        right_child.left = node
+        node.parent = right_child
+
+        # Update the heights of the nodes
+        node.height = max(self.get_height(node.left), self.get_height(node.right)) + 1
+        right_child.height = max(self.get_height(right_child.left), self.get_height(right_child.right)) + 1
+
+        return right_child
 
     def insert(self, val):
         """
@@ -89,14 +129,7 @@ class AVL(BST):
         super().insert(val)  # call parent insert method. insert(int val)
         self.balance(self.root)  # balance the tree starting from the root
 
-    def insert_node(self, TNode):
-        """
-        Inserts the given node into the AVL tree while maintaining the balance
-        of the tree
-        """
-        super().insert_node(TNode)  # call parent insert method. insert (Tnode Node)
-        self.balance(self.root)  # balance the tree starting from the root
-
+    
     def delete(self, val):
         """
         Deletes the node with the given value from the AVL tree while maintaining
@@ -109,7 +142,6 @@ class AVL(BST):
             super().delete(val)  # call parent delete method
             self.balance(node.parent)  # balance the tree starting from the parent of the deleted node
         
-
     def _find_node(self, val, node):
         """
         Helper function to find a node with the given value in the AVL tree
@@ -122,6 +154,40 @@ class AVL(BST):
             return self._find_node(val, node.left)
         else:
             return self._find_node(val, node.right)
+
+    def insert_node(self, node):
+        self.root = self._insert_node(self.root, node)
+
+    def _insert_node(self, current_node, node):
+        if not current_node:
+            return node
+        elif node.data < current_node.data:
+            current_node.left = self._insert_node(current_node.left, node)
+        else:
+            current_node.right = self._insert_node(current_node.right, node)
+        
+        # Update the height of the current node
+        current_node.height = 1 + max(self.get_height(current_node.left), self.get_height(current_node.right))
+        
+        # Check if the current node is balanced
+        balance = self.get_balance(current_node)
+        if balance > 1 and node.data < current_node.left.data:
+            return self.right_rotate(current_node)
+        if balance < -1 and node.data > current_node.right.data:
+            return self.left_rotate(current_node)
+        if balance > 1 and node.data > current_node.left.data:
+            current_node.left = self.left_rotate(current_node.left)
+            return self.right_rotate(current_node)
+        if balance < -1 and node.data < current_node.right.data:
+            current_node.right = self.right_rotate(current_node.right)
+            return self.left_rotate(current_node)
+        
+        return current_node
+
+    def get_balance(self, node):
+        if not node:
+            return 0
+        return self.get_height(node.left) - self.get_height(node.right)
 
     def Search(self, val):
         """
