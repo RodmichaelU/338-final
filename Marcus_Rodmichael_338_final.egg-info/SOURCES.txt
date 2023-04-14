@@ -1,9 +1,9 @@
 setup.py
+Marcus_Rodmichael_338_final.egg-info/PKG-INFO
+Marcus_Rodmichael_338_final.egg-info/SOURCES.txt
+Marcus_Rodmichael_338_final.egg-info/dependency_links.txt
+Marcus_Rodmichael_338_final.egg-info/top_level.txt
 myLib/__init__.py
-myLib.egg-info/PKG-INFO
-myLib.egg-info/SOURCES.txt
-myLib.egg-info/dependency_links.txt
-myLib.egg-info/top_level.txt
 myLib/datastructures/__init__.py
 myLib/datastructures/Linear/CDLL.py
 myLib/datastructures/Linear/CSLL.py

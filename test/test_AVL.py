@@ -1,3 +1,4 @@
+import pytest
 from myLib.datastructures.trees.BST import BST
 from myLib.datastructures.trees.AVL import AVL
 from myLib.datastructures.nodes.TNode import TNode
@@ -85,13 +86,12 @@ def test_AVL_printBF(capsys):
     captured = capsys.readouterr()
     assert captured.out == "5 3 7 2 4 6 8 "
 
-"""
 def test_AVL_balancing_performance():
         avl = AVL()
         for i in range(8191):
             avl.insert(i)
         assert avl.root.height <= 13
-"""
+
 
 
 def test_AVL_duplicate_values():

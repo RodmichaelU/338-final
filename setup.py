@@ -1,8 +1,10 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
-setup(name = 'myLib',
+setup(name = 'Marcus-Rodmichael-338-package',
       version = '1.0',
       description = 'Package containing Linear, nodes and trees',
-      author = 'Marcus Kittelson & Rodmichael Umapas',
-      packages = ['myLib', 'myLib.datastructures', 'myLib.datastructures.Linear', 'myLib.datastructures.nodes', 'myLib.datastructures.trees']
+      author = 'Rodmichael, Marcus',
+      author_email= 'rodmichael.umapas@ucalgary.ca, marcus.kittelson@ucalgary.ca',
+      packages = find_packages(),
+      install_requires = [],
 )

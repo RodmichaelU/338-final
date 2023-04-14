@@ -96,13 +96,6 @@ def test_queue_operations_depth():
     # Test is_empty after dequeuing all large number of elements
     assert queue.is_empty()
 
-"""
-def test_enqueue_with_none():
-    queue = QueueLL()
-    with pytest.raises(TypeError):
-        queue.enqueue(None)
-    assert queue.is_empty()
-"""
 
 def test_dequeue_with_empty_queue():
     queue = QueueLL()
@@ -120,30 +113,4 @@ def test_size_with_empty_queue():
     queue = QueueLL()
     assert queue.size == 0
     assert queue.is_empty()
-
-"""
-def test_insert_head():
-    queue = QueueLL()
-    node = SNode(1)
-    with pytest.raises(AttributeError):
-        queue.insert_head(node)
-    assert queue.is_empty()
-
-
-def test_insert_at_index():
-    queue = QueueLL()
-    node = SNode(1)
-    with pytest.raises(AttributeError):
-        queue.insert(node, 0)
-    assert queue.is_empty()
-
-
-def test_sorted_insert():
-    queue = QueueLL()
-    node = SNode(1)
-    with pytest.raises(AttributeError):
-        queue.sorted_insert(node)
-    assert queue.is_empty()
-"""
-
 
